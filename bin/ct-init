@@ -1,0 +1,152 @@
+#!/usr/bin/perl
+# PODNAME: ct-init
+use strict;
+use warnings;
+use File::Spec;
+
+my $ct_dir;
+BEGIN {
+    use Getopt::Long;
+    use Pod::Usage;
+    my $man = 0;
+    my $help = 0;
+
+    GetOptions(
+        'help|?' => \$help,
+        man      => \$man,
+
+        "dir=s"   => \$ct_dir
+    ) or pod2usage(2);
+    pod2usage(1) if $help;
+    pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+}
+
+use YAML::Tiny;
+
+my $curdir = File::Spec->curdir();
+
+if (!$ct_dir){
+    $ct_dir = File::Spec->catdir( $curdir, 'ct' );
+    mkdir $ct_dir or die "Cant create $ct_dir $@\n" unless -d $ct_dir;
+    print "CT Directory setup to $ct_dir\n";
+}else{
+    if (!-d $ct_dir){
+        mkdir $ct_dir or die "Cant create $ct_dir $@\n" unless -d $ct_dir;
+        print "CT Directory setup to $ct_dir and it looks fine!\n";
+    }else{
+        print "CT Directory $ct_dir does not exist or is not writable\n";
+    }
+}
+
+exit(1) unless -d $ct_dir && -w $ct_dir;
+
+die ("Config already exists!\n") if -e File::Spec->catfile($ct_dir, 'config.yaml');
+
+my $conf = {};
+my $def = 'Markdown';
+while (1){
+    print "Set your LogWriter format" . ( $def ? " [$def]: " : ": press enter to finish or type other LogWriter class: ");
+    my $maybe = <>;
+    chop($maybe);
+    $maybe ||= $def;
+    $def = '';
+
+    last unless $maybe;
+
+    push @{$conf->{log_writer}}, { format => $maybe };
+}
+
+
+my $def_log = File::Spec->rel2abs( File::Spec->catdir($ct_dir, '..', 'testsdoc') );
+$def_log = File::Spec->abs2rel( $def_log, $ct_dir );
+
+print "Set your LogWriters default output path [$def_log relative to $ct_dir]: ";
+my $maybe = <>;
+chop($maybe);
+$maybe ||= $def_log;
+$conf->{log_writers}{default_path} = $maybe;
+
+my $yaml = YAML::Tiny->new;
+
+$yaml->[0] = $conf;
+$yaml->write( File::Spec->catfile($ct_dir, 'config.yaml') );
+
+print "Configuration written on ".File::Spec->catfile($ct_dir, 'config.yaml')."\n";
+
+mkdir File::Spec->catdir($ct_dir, 'boot');
+mkdir File::Spec->catdir($ct_dir, 'tests');
+mkdir File::Spec->catdir($ct_dir, 'wrappers');
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ct-init
+
+=head1 VERSION
+
+version 0.1
+
+=head1 SYNOPSIS
+
+ct-init [options]
+
+    Options:
+
+        -help            this help message
+        -man             full documentation
+
+        -dir             directory to write CT files (defaults to: $PWD/ct/)
+
+=head1 DESCRIPTION
+
+B<ct-init> will create a new Test::CT directory from interative input.
+
+A directory will be created with:
+
+    boot/
+    wrappers/
+    tests/
+    config.yaml
+
+=head1 NAME
+
+ct-init - Init a new Test::CT directory with config.
+
+=head1 ABSTRACT
+
+Init a new Test::CT directory with config.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-dir>
+
+Directory to write the generated files and directories for CT.
+defaults to: $PWD/ct/
+
+=back
+
+=head1 AUTHOR
+
+Renato Cron <rentocron@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Renato Cron.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

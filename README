@@ -1,0 +1,13 @@
+
+
+This archive contains the distribution Test-CT,
+version 0.1:
+
+  *Mix* of Test::More + Test::Reuse + Test::Routine, with *template* system.
+
+This software is copyright (c) 2013 by Renato Cron.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+

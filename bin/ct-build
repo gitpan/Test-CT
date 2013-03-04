@@ -1,0 +1,165 @@
+#!/usr/bin/perl
+# PODNAME: ct-build
+use strict;
+use warnings;
+use File::Spec;
+
+my $curdir = File::Spec->curdir();
+my $ct_dir;
+my $t_dir;
+my $prove;
+my $prove_args = '-lv';
+my $check;
+BEGIN {
+    use Getopt::Long;
+    use Pod::Usage;
+    my $man = 0;
+    my $help = 0;
+
+    GetOptions(
+        'help|?' => \$help,
+        man      => \$man,
+
+        "dir=s"           => \$ct_dir,
+        "out=s"           => \$t_dir,
+
+        "p|prove"         => \$prove,
+        "prove_args=s"    => \$prove_args,
+        "c|check-syntax!"  => \$check,
+
+    ) or pod2usage(2);
+    pod2usage(1) if $help;
+    pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+
+    $ct_dir = File::Spec->catdir( $curdir, 'ct' ) if (!$ct_dir);
+
+    die "Can't find CT directory ($ct_dir)\n" unless -d $ct_dir;
+
+
+    $t_dir = File::Spec->catdir( $curdir, 't' ) if (!$t_dir);
+
+    die "Can't find tests output directory ($t_dir)\n" unless -d $t_dir;
+}
+
+use Test::CT::Assembly;
+$check //= 1;
+
+my $compiler = Test::CT::Assembly->new(
+    ct_dir          => $ct_dir,
+    (defined $t_dir ? (test_dir_output => $t_dir) : ()),
+    check_syntax => $check
+);
+
+my $tests = $compiler->write_tests;
+
+if ($prove && exists $tests->{tests}){
+
+    print "\nauto-execute prove on!\n";
+
+    require IO::Select;
+
+    print "executing prove $prove_args for @{$tests->{tests}}...\n  ";
+
+    my $s = IO::Select->new();
+
+    open my $fh, '-|', "prove $prove_args '".(join("' '", @{$tests->{tests}}))."'";
+    $s->add($fh);
+
+    while (my @readers = $s->can_read()) {
+        for my $fh (@readers) {
+            if (eof $fh) {
+                $s->remove($fh);
+                next;
+            }
+            my $l = <$fh>;
+            print "  $l";
+        }
+    }
+
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ct-build
+
+=head1 VERSION
+
+version 0.1
+
+=head1 SYNOPSIS
+
+ct-init [options]
+
+    Options:
+
+        -help             this help message
+        -man              full documentation
+
+        -dir              directory to read CT files (defaults to: $PWD/ct/)
+        -out              directory to write tests files (defaults to: $PWD/t/)
+
+        -p
+        -prove            run prove command after compiling tests.
+
+        -prove_args       arguments to pass to prove. defaults to '-lv'
+
+        -c
+        -check-syntax     check syntax on scripts written
+                            note: you may NEVER do "use strict" by yourself
+                                  this will make this verification fail every time!
+
+        -no-c
+        -no-check-syntax  disable syntax checking
+
+=head1 DESCRIPTION
+
+B<ct-init> will create a new Test::CT directory from interative input.
+
+=head1 NAME
+
+ct-build - Compile a CT Directory into tests files.
+
+=head1 ABSTRACT
+
+Compile a CT Directory into tests files.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-dir>
+
+Directory to read files from CT
+defaults to: $PWD/ct/
+
+=item B<-out>
+
+Directory to write tests files generated from CT Directory
+defaults to: $PWD/t/
+
+=back
+
+=head1 AUTHOR
+
+Renato Cron <rentocron@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Renato Cron.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

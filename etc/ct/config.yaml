@@ -1,0 +1,6 @@
+---
+log_writer:
+  -
+    format: Markdown
+log_writers:
+  default_path: etc/test_out/
