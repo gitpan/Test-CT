@@ -1,7 +1,8 @@
 package Test::CT;
 # ABSTRACT: *Mix* of Test::More + Test::Reuse + Test::Routine, with *template* system.
 use strict;
-our $VERSION = '0.01';
+our $VERSION = '0.12'; # VERSION 0.02
+our $VERSION = '0.02';
 $VERSION = eval $VERSION;    ## no critic (BuiltinFunctions::ProhibitStringyEval)
 use strict;
 use MooseX::Singleton;
@@ -259,11 +260,11 @@ sub push_log {
 }
 
 sub down_log_level {
-    ...
+    print STDERR "NOT IMPLEMENTED!";
 }
 
 sub up_log_level {
-    ...
+    print STDERR "NOT IMPLEMENTED!";
 }
 
 sub finalize {
@@ -302,7 +303,7 @@ Test::CT - *Mix* of Test::More + Test::Reuse + Test::Routine, with *template* sy
 
 =head1 VERSION
 
-version 0.1
+version 0.12
 
 =head1 SYNOPSIS
 

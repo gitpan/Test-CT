@@ -18,7 +18,6 @@ $tester->config($test_ct_config);
 # etc/ct/boot/01-load-heavy-things.ct.t
 # use Catalyst::Test q(YourCatalystApp);
 # you can write anything here!
-$foooo=1;
 # etc/ct/boot/02-do-another-thing-after-01.ct.t
 # my $schema = MyApp->model('DB');
 my $schema = { keep => 'simple' };
