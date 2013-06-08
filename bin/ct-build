@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # PODNAME: ct-build
-our $VERSION = '0.14'; # VERSION 0.02
+our $VERSION = '0.142'; # VERSION 0.02
 # ABSTRACT: build (and run) your tests
 
 use strict;
@@ -87,7 +87,7 @@ ct-build - build (and run) your tests
 
 =head1 VERSION
 
-version 0.14
+version 0.142
 
 =head1 SYNOPSIS
 

@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution Test-CT,
-version 0.14:
+version 0.142:
 
   *Mix* of Test::More + Test::Reuse + Test::Routine, with *template* system.
 

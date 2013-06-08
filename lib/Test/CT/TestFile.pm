@@ -1,6 +1,6 @@
 package Test::CT::TestFile;
 # ABSTRACT: Test::CT::TestFile keep status of a piece of a test
-our $VERSION = '0.14'; # VERSION 0.01
+our $VERSION = '0.142'; # VERSION 0.01
 use Moose;
 
 has name => (
@@ -40,7 +40,7 @@ Test::CT::TestFile - Test::CT::TestFile keep status of a piece of a test
 
 =head1 VERSION
 
-version 0.14
+version 0.142
 
 =head1 AUTHOR
 

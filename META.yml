@@ -31,4 +31,4 @@ requires:
 resources:
   bugtracker: https://github.com/renatoaware/Test-CT/issues
   repository: git://github.com/renatoaware/Test-CT.git
-version: 0.14
+version: 0.142

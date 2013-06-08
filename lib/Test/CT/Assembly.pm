@@ -1,6 +1,6 @@
 package Test::CT::Assembly;
 # ABSTRACT: Write tests files from *.ct.t files
-our $VERSION = '0.14'; # VERSION 0.01
+our $VERSION = '0.142'; # VERSION 0.01
 use Moose;
 use File::Find;
 use YAML::Tiny;
@@ -182,7 +182,7 @@ Test::CT::Assembly - Write tests files from *.ct.t files
 
 =head1 VERSION
 
-version 0.14
+version 0.142
 
 =head1 AUTHOR
 
