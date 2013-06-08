@@ -42,7 +42,7 @@ How it works:
     # run the tests!
     $tester->run( name => 'name you want');
 
-    $tester->run( name => 'name you want'); # this will not run test again!
+    $tester->run( name => 'name you want'); # the subref will not be called again, only if you
 
 
 Like Test::More, Test::CT gives to the following methods:
@@ -129,6 +129,11 @@ To see this in action, please execute (you need have dependencies installed as w
         Result: PASS
 
 
+After this, `etc/test_out/doc/all-tests.md` will be (re)written with tests results.
+
+You can see one example [here, docs/examples/logwritter-markdown-sample.md](https://github.com/renatoaware/Test-CT/blob/master/docs/examples/logwritter-markdown-sample.md "Markdown Sample")
+
+
 Here are the currently are dependencies, but dzil may keep cpan builds up to date:
 
 * Moose
@@ -145,7 +150,13 @@ Please see ct-build / ct-init man page to more info about it.
 
 ## CAVERATS
 
-Currently, you can not use __END__ or __DATA__ on your tests scripts. Nor do "use strict" by yourself.
+### __END__ and __DATA__
+
+Currently, if you write `__END__` or `__DATA__` in your tests scripts, all text bellow `__END__` will be lost, even `__DATA__`.
+
+Also, when `__DATA__` is present, then `$data_content` will exists and hold the data content (O'RLY?).
+
+## Hints
 
 All tests scripts outputs begin `use Test::CT` that do a `use Moose`, so it already are strict / warnings;
 
@@ -155,8 +166,8 @@ All tests scripts outputs begin `use Test::CT` that do a `use Moose`, so it alre
 * support to more log outputs (like interative HTML)
 * more than one test output. (eg: group of tests)
 * exemple of custom LogWriter for CRUD Catalyst REST API
-* __DATA__ and __END__
 * Test::CT::LogWriter::Swagger ?
+* timings
 
 ## AUTHOR
 

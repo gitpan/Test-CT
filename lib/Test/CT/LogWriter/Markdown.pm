@@ -1,6 +1,6 @@
 package Test::CT::LogWriter::Markdown;
 # ABSTRACT: Write tests results in Markdown
-our $VERSION = '0.12'; # VERSION 0.01
+our $VERSION = '0.14'; # VERSION 0.01
 use Moose;
 use Data::Dumper;
 
@@ -132,7 +132,7 @@ Test::CT::LogWriter::Markdown - Write tests results in Markdown
 
 =head1 VERSION
 
-version 0.12
+version 0.14
 
 =head1 AUTHOR
 

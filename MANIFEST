@@ -1,3 +1,4 @@
+Changes
 LICENSE
 MANIFEST
 META.yml
@@ -6,7 +7,7 @@ README
 README.md
 bin/ct-build
 bin/ct-init
-etc/ct/all-tests.t
+docs/examples/logwritter-markdown-sample.md
 etc/ct/boot/01-load-heavy-things.ct.t
 etc/ct/boot/02-do-another-thing-after-01.ct.t
 etc/ct/config.yaml

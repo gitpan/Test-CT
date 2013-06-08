@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # PODNAME: ct-init
-our $VERSION = '0.12'; # VERSION 0.02
+our $VERSION = '0.14'; # VERSION 0.02
 # ABSTRACT: setup script create a new ct/config.yaml file
 
 use strict;
@@ -89,7 +89,7 @@ ct-init - setup script create a new ct/config.yaml file
 
 =head1 VERSION
 
-version 0.12
+version 0.14
 
 =head1 SYNOPSIS
 
